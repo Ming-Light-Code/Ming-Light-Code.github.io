@@ -1,0 +1,465 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>数字逻辑电路笔记 | Hello sekai</title><meta name="author" content="ming"><meta name="copyright" content="ming"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="一、数制与码制  数制   数制：十（D），2，4，8，16，R   数制的转换   R→十： 十→2（4，8，16） 整数：短除2至被除数为0，倒序排列 小数：连乘2至结果为0，正序排列   2→4（8，16）：每4（3，4）位组合转化   码制   原码：正数：0… 负数：1… +2进制  两个0 $-2^{n - 1} - 1\sim2^{n - 1} - 1$   反码：负数1… +取反">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数字逻辑电路笔记">
+<meta property="og:url" content="https://ming-light-code.github.io/2026/05/02/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E7%94%B5%E8%B7%AF%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Hello sekai">
+<meta property="og:description" content="一、数制与码制  数制   数制：十（D），2，4，8，16，R   数制的转换   R→十： 十→2（4，8，16） 整数：短除2至被除数为0，倒序排列 小数：连乘2至结果为0，正序排列   2→4（8，16）：每4（3，4）位组合转化   码制   原码：正数：0… 负数：1… +2进制  两个0 $-2^{n - 1} - 1\sim2^{n - 1} - 1$   反码：负数1… +取反">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/ming985ing/picgo-using@main/img/4bcd8b57e01954b72359d8e66edab753.jpg">
+<meta property="article:published_time" content="2026-05-02T04:30:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T04:30:00.000Z">
+<meta property="article:author" content="ming">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/ming985ing/picgo-using@main/img/4bcd8b57e01954b72359d8e66edab753.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "数字逻辑电路笔记",
+  "url": "https://ming-light-code.github.io/2026/05/02/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E7%94%B5%E8%B7%AF%E7%AC%94%E8%AE%B0/",
+  "image": "https://cdn.jsdelivr.net/gh/ming985ing/picgo-using@main/img/4bcd8b57e01954b72359d8e66edab753.jpg",
+  "datePublished": "2026-05-02T04:30:00.000Z",
+  "dateModified": "2026-05-02T04:30:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "ming",
+      "url": "https://Ming-Light-Code.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://ming-light-code.github.io/2026/05/02/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E7%94%B5%E8%B7%AF%E7%AC%94%E8%AE%B0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '数字逻辑电路笔记',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/assets/inject/typer_head.css"><link rel="stylesheet" href="/assets/inject/musicplayer_head.css"><link rel="stylesheet" href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/Swiper/8.0.6/swiper-bundle.min.css"><link rel="stylesheet" href="/assets/newyear/newyear.css"><link rel="stylesheet" href="/assets/live2d/live2dsetting.css"><link rel="stylesheet" href="/assets/universe/universe.css"><meta name="generator" content="Hexo 8.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="https://s41.ax1x.com/2026/02/03/pZ5m3Gj.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th-large"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 音视听</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 动画</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fas fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://cdn.jsdelivr.net/gh/ming985ing/picgo-using@main/img/4bcd8b57e01954b72359d8e66edab753.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Hello sekai</span></a><a class="nav-page-title" href="/"><span class="site-name">数字逻辑电路笔记</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th-large"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 音视听</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 动画</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fas fa-image"></i><span> 图片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">数字逻辑电路笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-05-02T04:30:00.000Z" title="发表于 2026-05-02 12:30:00">2026-05-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-05-02T04:30:00.000Z" title="更新于 2026-05-02 12:30:00">2026-05-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%AC%94%E8%AE%B0/"> 笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>一、数制与码制</p>
+<ol>
+<li>数制</li>
+</ol>
+<ul>
+<li>数制：十（D），2，4，8，16，R</li>
+</ul>
+<ol>
+<li><strong>数制的转换</strong></li>
+</ol>
+<ul>
+<li>R→十：</li>
+<li>十→2（4，8，16）<ul>
+<li>整数：短除2至被除数为0，倒序排列</li>
+<li>小数：连乘2至结果为0，正序排列</li>
+</ul>
+</li>
+<li>2→4（8，16）：每4（3，4）位组合转化</li>
+</ul>
+<ol start="3">
+<li>码制</li>
+</ol>
+<ul>
+<li>原码：正数：0… 负数：1… +2进制 <ul>
+<li>两个0</li>
+<li>$-2^{n - 1} - 1\sim2^{n - 1} - 1$</li>
+</ul>
+</li>
+<li>反码：负数1… +取反 <ul>
+<li>两个0</li>
+<li>$-2^{n - 1} - 1\sim2^{n - 1} - 1$</li>
+</ul>
+</li>
+<li>补码：<ul>
+<li>负数反码+1 </li>
+<li>只有1个0 </li>
+<li><strong>$-2^{n - 1} \sim2^{n - 1} - 1$</strong></li>
+</ul>
+</li>
+<li>其它码：<ul>
+<li>BCD码：4位表示一位十位进制<ul>
+<li>8421BCD：</li>
+<li>2421BCD：例12 &#x3D; 00010010 &#x3D; 00010010 &#x3D; 01000101</li>
+<li>余3码：8421 + 3(0011) <strong>每一位</strong></li>
+<li>例12 &#x3D; 00010010 &#x3D; 00010010 &#x3D; 01000101</li>
+</ul>
+</li>
+<li>BCD码计算：2进制加法（&gt;9时+6(0110)）修正</li>
+<li>循环码&#x2F;格雷码：减数取10的补码（进位— 无进位→求补&#x2F;化10）<ul>
+<li>(00 01 11 10)</li>
+<li>二→格：高位相同 格（i）&#x3D; 2（i）+ 2（i + 1）</li>
+<li>格→二：高位相同 2（i）&#x3D; 格i + 2（i + 1）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>二、逻辑函数及其简化</p>
+<ol>
+<li><p>逻辑运算</p>
+<ul>
+<li>非：$\overline{S}$</li>
+<li>与（乘）：$S_1S_2$</li>
+<li>或（加）：$S_1 + S_2$</li>
+<li>与非：$\overline{S_1S_2} &#x3D; \overline{S_1} + \overline{S_2}$</li>
+<li>或非：$\overline{S_1 + S_2} &#x3D; \overline{S_1}*\overline{S_2}$</li>
+<li>异或：$S_1 \oplus S_2 &#x3D; \overline{S_1}S_2 + S_1\overline{S_2}$</li>
+<li>同或（异或非）：$S_1 \odot S_2 &#x3D; \overline{S_1}\overline{S_2} + S_1S_2$</li>
+</ul>
+</li>
+<li><p>基本等式 </p>
+</li>
+<li><p>完备集</p>
+</li>
+<li><p>基本规则</p>
+</li>
+</ol>
+<ul>
+<li>代换：X替Y（式子）</li>
+<li>对偶（求对偶函数）：$0 \leftrightarrow 1，\cdot \leftrightarrow +$</li>
+<li>反演（求反函数）：$0 \leftrightarrow 1，\cdot \leftrightarrow +，X_i \leftrightarrow \overline{X_i}$</li>
+</ul>
+<ol start="5">
+<li>公式</li>
+</ol>
+<ul>
+<li>并项：$AB + \overline{A}B &#x3D; B &#x2F;&#x2F; (A + B)(\overline{A} + B) &#x3D; B$</li>
+<li>消冗因子：$A + \overline{A}B &#x3D; A + B &#x2F;&#x2F; A(\overline{A} + B) &#x3D; AB$</li>
+<li>消冗余项：$AB + \overline{A}C + BC &#x3D; AB + \overline{A}C &#x2F;&#x2F; (A + B)(\overline{A} + C)(B + C) &#x3D; (A + B)(\overline{A} + C)$</li>
+</ul>
+<ol start="5">
+<li>绘制卡诺图</li>
+</ol>
+<ul>
+<li>A - B 均为1形式，用圈连接</li>
+</ul>
+<ol start="7">
+<li>标准表达式</li>
+</ol>
+<ul>
+<li>最小项与标准与-或：$F &#x3D; \sum m \cdot f_i$</li>
+<li>最大项与标准或-与：$F &#x3D;\ prod M(f_i + M)$</li>
+<li>与-或-非表达式：<ul>
+<li>反函数的与-或式取非（卡诺图的0）</li>
+<li>或-与-非两次非</li>
+</ul>
+</li>
+</ul>
+<p>三、组合逻辑函数的分析与设计</p>
+<ol>
+<li><p>最小化设计</p>
+</li>
+<li><p>竞争与险象</p>
+</li>
+</ol>
+<ul>
+<li>竞争：信号变化时存在时差，此现象为竞争</li>
+<li>逻辑险象：单信号变化</li>
+<li>功能险象（函数险象）：多信号变化</li>
+<li>判断：<ul>
+<li>功能险象：路径判断</li>
+<li>逻辑险象：<ul>
+<li>矛盾项<ul>
+<li>$C +\ overline{C}$–静态1</li>
+<li>$C\overline{C}$–静态0</li>
+</ul>
+</li>
+<li>存在相切不相交的卡诺图</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>处理：<ul>
+<li>功能险象：加入选通脉冲（采样脉冲）</li>
+<li>逻辑险象：加冗余项（卡诺图法）</li>
+</ul>
+</li>
+</ul>
+<p>四、逻辑功能器件</p>
+<ol>
+<li>编码器</li>
+</ol>
+<ul>
+<li>4线-2线</li>
+<li>9线-2线优先编码器</li>
+<li>74148（8-3优先）</li>
+<li>74147（10-4优先）</li>
+</ul>
+<ol start="2">
+<li>译码器</li>
+</ol>
+<ul>
+<li>74139（2-4线）</li>
+<li>74138（3-8线）</li>
+<li>7442（二十进制）</li>
+<li>7448（七段显示）</li>
+</ul>
+<ol>
+<li>数据选择器</li>
+</ol>
+<ul>
+<li>多路并行→高速串行</li>
+<li>卡诺图降维</li>
+<li>2选一</li>
+<li>双四选一（74153）</li>
+<li>8选一（74151）</li>
+</ul>
+<ol start="4">
+<li>数据分配器</li>
+</ol>
+<ul>
+<li>74138（8线）：若干与门&#x2F;产生多路节拍&#x2F;分时传输</li>
+</ul>
+<ol start="5">
+<li>数值比较器</li>
+</ol>
+<ul>
+<li>一位二进制</li>
+<li>4位（4位7485）</li>
+</ul>
+<p>五、奇偶校验与算术电路</p>
+<ol>
+<li>奇偶校验</li>
+</ol>
+<ul>
+<li>奇偶校验电路：异或运算 $F &#x3D; x_1 \oplus x_2 \oplus x_3 \dots$</li>
+<li>奇偶校验位（额外加一位，奇校验体内值使总1数为奇）</li>
+<li>74280（9位）：<ul>
+<li>EVEN 偶（1为偶时为1）</li>
+<li>ODD 奇（1为奇时为1）</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>算术电路</li>
+</ol>
+<ul>
+<li>一位二进制（半加&#x2F;全加）C_{in}：<ul>
+<li>半：有低进位</li>
+<li>全：有低进位</li>
+</ul>
+</li>
+<li>逐位进位全加器</li>
+<li>超前进位全加器：4位（74283）</li>
+<li>补码计算：<ul>
+<li>$A - B \Rightarrow A + (-B)$</li>
+<li>$N_{补} &#x3D; 2^n - N_{原} &#x3D; N_{反} + 1$</li>
+<li>$A - B &#x3D; A + B_{补} - 2^n &#x3D; A + B_{反} + 1 - 2^n$</li>
+<li>$-2^n \Rightarrow 进位取反&#x3D;借位$</li>
+</ul>
+</li>
+<li>$A - B &gt; 0：进位处为1，即借0位$</li>
+<li>$A - B &lt; 0：进位处为0，即借1位，再求补得到结果$</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://Ming-Light-Code.github.io/">ming</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ming-light-code.github.io/2026/05/02/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E7%94%B5%E8%B7%AF%E7%AC%94%E8%AE%B0/">https://ming-light-code.github.io/2026/05/02/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E7%94%B5%E8%B7%AF%E7%AC%94%E8%AE%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ming-light-code.github.io" target="_blank">Hello sekai</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a></div><div class="post-share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/ming985ing/picgo-using@main/img/4bcd8b57e01954b72359d8e66edab753.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/04/10/%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%975%E2%80%94%E2%80%9426.04.10/" title="更新日志4——26.02.11"><img class="cover" src="https://cdn.jsdelivr.net/gh/ming985ing/picgo-using@main/img/bg1.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">更新日志4——26.02.11</div></div><div class="info-2"><div class="info-item-1">增加了一些网站功能，对已知问题进行了修复部署到了netlify.app新链接：https://blog-ming.netlify.app/之后还会绑定新的自定义域名，以方便国内访问 修改了倒计时卡片节日被更改到了五一劳动节 对网站进行了优化合并压缩了原有的CSS，JS文件为网站几处增加了懒加载 参考网页：网站性能优化的一些小技巧 | Fomalhaut🥝网站加载速度优化方案总结 | 山岳库博 附言其实自己还蛮懒的，两个月才想起来写更新日志╔囧╗╔囧╝╚囧╝╚囧╗ </div></div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="https://s41.ax1x.com/2026/02/03/pZ5m3Gj.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">ming</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/ming985ing"><i class="fab fa-github"></i><span>关注我</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ming-Light-Code" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:3863421376@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://user.qzone.qq.com/3863421376" target="_blank" title="QQ"><i class="fab fa-qq" style="color: #12b7f5;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">该博客为兴趣所建，用于记录自己的学习及生活( ᖛ ̫ ᖛ )ʃ)</div></div><div class="card-widget" id="newYear"><div class="item-headline"><i></i><span></span></div><div class="item-content"> <div class="newYear-slider"> <div class="swiper-wrapper"> <div class="swiper-slide" style="background-image:url(/assets/newyear/bg1.webp)"></div> <div class="swiper-slide" style="background-image:url(/assets/newyear/bg2.webp)"></div> <div class="swiper-slide" style="background-image:url(/assets/newyear/bg3.webp)"></div> </div> </div> <div id="newYear-main"> <div class="mask"></div> <p class="title"></p> <div class="newYear-time"></div> <p class="today" style="text-align: right;"></p> </div> </div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/05/02/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E7%94%B5%E8%B7%AF%E7%AC%94%E8%AE%B0/" title="数字逻辑电路笔记"><img src="https://cdn.jsdelivr.net/gh/ming985ing/picgo-using@main/img/4bcd8b57e01954b72359d8e66edab753.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数字逻辑电路笔记"/></a><div class="content"><a class="title" href="/2026/05/02/%E6%95%B0%E5%AD%97%E9%80%BB%E8%BE%91%E7%94%B5%E8%B7%AF%E7%AC%94%E8%AE%B0/" title="数字逻辑电路笔记">数字逻辑电路笔记</a><time datetime="2026-05-02T04:30:00.000Z" title="发表于 2026-05-02 12:30:00">2026-05-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/04/10/%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%975%E2%80%94%E2%80%9426.04.10/" title="更新日志4——26.02.11"><img src="https://cdn.jsdelivr.net/gh/ming985ing/picgo-using@main/img/bg1.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="更新日志4——26.02.11"/></a><div class="content"><a class="title" href="/2026/04/10/%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%975%E2%80%94%E2%80%9426.04.10/" title="更新日志4——26.02.11">更新日志4——26.02.11</a><time datetime="2026-04-10T13:30:00.000Z" title="发表于 2026-04-10 21:30:00">2026-04-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/04/08/%E6%B3%B0%E6%8B%89%E7%91%9E%E4%BA%9Amod%E5%BC%80%E5%8F%91%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8F%8A%E7%BD%91%E7%AB%99%E6%8E%A8%E8%8D%90/" title="泰拉瑞亚mod开发实用工具及网站推荐"><img src="https://s41.ax1x.com/2026/04/08/peaUDhQ.md.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="泰拉瑞亚mod开发实用工具及网站推荐"/></a><div class="content"><a class="title" href="/2026/04/08/%E6%B3%B0%E6%8B%89%E7%91%9E%E4%BA%9Amod%E5%BC%80%E5%8F%91%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8F%8A%E7%BD%91%E7%AB%99%E6%8E%A8%E8%8D%90/" title="泰拉瑞亚mod开发实用工具及网站推荐">泰拉瑞亚mod开发实用工具及网站推荐</a><time datetime="2026-04-08T11:30:00.000Z" title="发表于 2026-04-08 19:30:00">2026-04-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/04/07/hello-world/" title="Hello World"><img src="https://imgchr.com/i/pZ45nYt" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2026/04/07/hello-world/" title="Hello World">Hello World</a><time datetime="2026-04-07T09:38:32.230Z" title="发表于 2026-04-07 17:38:32">2026-04-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/12/%E5%A6%82%E4%BD%95%E4%B8%BA%E4%BD%A0%E7%9A%84hexo%E7%BD%91%E7%AB%99%E6%B7%BB%E5%8A%A0live2d%E7%9C%8B%E6%9D%BF%E5%A8%98/" title="如何为你的hexo网站添加live2d看板娘"><img src="https://cdn.jsdelivr.net/gh/ming985ing/picgo-using@main/img/2d4bae3a7ba109324d4e93e8b297bb68.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="如何为你的hexo网站添加live2d看板娘"/></a><div class="content"><a class="title" href="/2026/02/12/%E5%A6%82%E4%BD%95%E4%B8%BA%E4%BD%A0%E7%9A%84hexo%E7%BD%91%E7%AB%99%E6%B7%BB%E5%8A%A0live2d%E7%9C%8B%E6%9D%BF%E5%A8%98/" title="如何为你的hexo网站添加live2d看板娘">如何为你的hexo网站添加live2d看板娘</a><time datetime="2026-02-12T03:30:00.000Z" title="发表于 2026-02-12 11:30:00">2026-02-12</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By ming</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">感谢你的到来！</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(async () => {
+  const showKatex = () => {
+    document.querySelectorAll('#article-container .katex').forEach(el => el.classList.add('katex-show'))
+  }
+
+  if (!window.katex_js_css) {
+    window.katex_js_css = true
+    await btf.getCSS('https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/katex.min.css')
+    if (false) {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/contrib/copy-tex.min.js')
+    }
+  }
+
+  showKatex()
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'Ming-Light-Code/BlogGiscus',
+      'data-repo-id': 'R_kgDOR8_AlQ',
+      'data-category-id': 'DIC_kwDOR8_Alc4C6Xjc',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !true) {
+    if (true) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})()</script></div><script src="/assets/inject/musicplayer_bottle.js"></script><script src="/assets/inject/typer_bottle.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/Swiper/8.0.6/swiper-bundle.min.js"></script><script src="/assets/newyear/newyear.js"></script><canvas id="universe"></canvas><script defer src="/assets/universe/universe.js"></script><script defer type="text/javascript" src="https://cdn1.tianli0.top/npm/sweetalert2@8.19.0/dist/sweetalert2.all.js"></script><script defer src="/assets/day/lunar.js"></script><script defer src="/assets/day/day.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
