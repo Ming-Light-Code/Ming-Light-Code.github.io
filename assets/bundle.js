@@ -744,175 +744,27 @@ whenDOMReady();
 document.addEventListener("pjax:complete", whenDOMReady);
 
 /* ============================================================
- *  8. Live2D Toggle (source: assets/live2d/live2d.js)
- * ============================================================ */
-(function() {
-    function getLive2dContainer() {
-      if (window.oml2d && window.oml2d.stage && window.oml2d.stage.canvas) {
-        return window.oml2d.stage.canvas.parentElement.parentElement;
-      }
-      var _el = document.querySelector('.live2d-stage, [class*="live2d"] canvas');
-      return _el && _el.parentElement && _el.parentElement.parentElement;
-    }
-
-    function toggleLive2d() {
-      var container = getLive2dContainer();
-      if (!container) return;
-      var isHidden = container.style.display === 'none';
-      container.style.display = isHidden ? 'block' : 'none';
-      var btn = document.getElementById('live2d-toggle');
-      if (btn) {
-        btn.innerHTML = isHidden ? '<i class="fa-solid fa-eye-slash"></i>' : '<i class="fa-solid fa-eye"></i>';
-        btn.title = isHidden ? '隐藏模型' : '显示模型';
-      }
-    }
-
-    function addLive2dButtons() {
-      var rightside = document.getElementById('rightside');
-      if (!rightside || document.getElementById('live2d-toggle')) return;
-
-      var toggleBtn = document.createElement('div');
-      toggleBtn.id = 'live2d-toggle';
-      toggleBtn.className = 'rightside-item';
-      toggleBtn.innerHTML = '<i class="fa-solid fa-eye"></i>';
-      toggleBtn.title = '隐藏模型';
-      toggleBtn.addEventListener('click', toggleLive2d);
-
-      rightside.prepend(toggleBtn);
-    }
-
-    addLive2dButtons();
-    window.addEventListener('pjax:complete', addLive2dButtons);
-})();
-
-/* ============================================================
- *  9. Universe Starry Background (source: assets/universe/universe.js)
+ *  8. Universe Starry Background (source: assets/universe/universe.js)
  * ============================================================ */
 function dark() {window.requestAnimationFrame=window.requestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||window.msRequestAnimationFrame;var n,e,i,h,t=.05,s=document.getElementById("universe"),o=!0,a="180,184,240",r="226,225,142",d="226,225,224",c=[];function f(){n=window.innerWidth,e=window.innerHeight,i=.216*n,s.setAttribute("width",n),s.setAttribute("height",e)}function u(){h.clearRect(0,0,n,e);for(var t=c.length,i=0;i<t;i++){var s=c[i];s.move(),s.fadeIn(),s.fadeOut(),s.draw()}}function y(){this.reset=function(){this.giant=m(3),this.comet=!this.giant&&!o&&m(10),this.x=l(0,n-10),this.y=l(0,e),this.r=l(1.1,2.6),this.dx=l(t,6*t)+(this.comet+1-1)*t*l(50,120)+2*t,this.dy=-l(t,6*t)-(this.comet+1-1)*t*l(50,120),this.fadingOut=null,this.fadingIn=!0,this.opacity=0,this.opacityTresh=l(.2,1-.4*(this.comet+1-1)),this.do=l(5e-4,.002)+.001*(this.comet+1-1)},this.fadeIn=function(){this.fadingIn&&(this.fadingIn=!(this.opacity>this.opacityTresh),this.opacity+=this.do)},this.fadeOut=function(){this.fadingOut&&(this.fadingOut=!(this.opacity<0),this.opacity-=this.do/2,(this.x>n||this.y<0)&&(this.fadingOut=!1,this.reset()))},this.draw=function(){if(h.beginPath(),this.giant)h.fillStyle="rgba("+a+","+this.opacity+")",h.arc(this.x,this.y,2,0,2*Math.PI,!1);else if(this.comet){h.fillStyle="rgba("+d+","+this.opacity+")",h.arc(this.x,this.y,1.5,0,2*Math.PI,!1);for(var t=0;t<30;t++)h.fillStyle="rgba("+d+","+(this.opacity-this.opacity/20*t)+")",h.rect(this.x-this.dx/4*t,this.y-this.dy/4*t-2,2,2),h.fill()}else h.fillStyle="rgba("+r+","+this.opacity+")",h.rect(this.x,this.y,this.r,this.r);h.closePath(),h.fill()},this.move=function(){this.x+=this.dx,this.y+=this.dy,!1===this.fadingOut&&this.reset(),(this.x>n-n/4||this.y<0)&&(this.fadingOut=!0)},setTimeout(function(){o=!1},50)}function m(t){return Math.floor(1e3*Math.random())+1<10*t}function l(t,i){return Math.random()*(i-t)+t}f(),window.addEventListener("resize",f,!1),function(){h=s.getContext("2d");for(var t=0;t<i;t++)c[t]=new y,c[t].reset();u()}(),function t(){document.getElementsByTagName('html')[0].getAttribute('data-theme')=='dark'&&u(),window.requestAnimationFrame(t)}()};
 dark();
 
+
 /* ============================================================
- *  10. Music Page (source: music page)
+ *  9. Photos Page (source: photos page)
  * ============================================================ */
 (function() {
   'use strict';
 
-  var METING_API_MIRRORS = [
-    'https://api.i-meto.com/meting/api',
-    'https://api.injahow.cn/meting/api'
-  ];
+  var lightbox = null;
+  var CACHE_KEY = 'photos_v5';
+  var CACHE_TTL = 3600000;
 
   function escapeHtml(str) {
     var div = document.createElement('div');
     div.textContent = str || '';
     return div.innerHTML;
   }
-
-  function getSongLink(song) {
-    if (song.url_id) return 'https://music.163.com/#/song?id=' + song.url_id;
-    if (song.url) {
-      var m = song.url.match(/[?&]id=(\d+)/);
-      if (m) return 'https://music.163.com/#/song?id=' + m[1];
-    }
-    return null;
-  }
-
-  function createSongCard(song) {
-    var link = getSongLink(song);
-    var el = document.createElement(link ? 'a' : 'div');
-    el.className = 'music-song-card';
-    if (link) { el.href = link; el.target = '_blank'; el.rel = 'noopener'; }
-    el.title = (song.name || '') + ' - ' + (song.artist || '');
-
-    var cover = song.pic || song.cover || '';
-    var name = escapeHtml(song.name || '未知歌曲');
-    var artist = escapeHtml(song.artist || '未知艺术家');
-    var album = escapeHtml(song.album || '');
-
-    el.innerHTML =
-      '<img class="music-song-cover" src="' + cover + '" alt="" loading="lazy" ' +
-      'onerror="this.style.display=\'none\'">' +
-      '<div class="music-song-info">' +
-        '<div class="music-song-name">' + name + '</div>' +
-        '<div class="music-song-artist">' + artist + '</div>' +
-        (album ? '<div class="music-song-album">' + album + '</div>' : '') +
-      '</div>';
-    return el;
-  }
-
-  function fetchPlaylist(server, type, id, mirrorIndex) {
-    mirrorIndex = mirrorIndex || 0;
-    if (mirrorIndex >= METING_API_MIRRORS.length) {
-      return Promise.reject(new Error('所有 API 镜像不可用'));
-    }
-    var url = METING_API_MIRRORS[mirrorIndex] +
-      '?server=' + encodeURIComponent(server) +
-      '&type=' + encodeURIComponent(type) +
-      '&id=' + encodeURIComponent(id);
-    return fetch(url).then(function(resp) {
-      if (!resp.ok) throw new Error('HTTP ' + resp.status);
-      return resp.json();
-    }).catch(function() {
-      return fetchPlaylist(server, type, id, mirrorIndex + 1);
-    });
-  }
-
-  function initPlaylist(container) {
-    var id = container.dataset.id;
-    var server = container.dataset.server || 'netease';
-    var type = container.dataset.type || 'playlist';
-    var title = container.dataset.title || '歌单 ' + id;
-
-    var titleEl = document.createElement('h2');
-    titleEl.className = 'music-playlist-title';
-    titleEl.innerHTML =
-      '<span>' + escapeHtml(title) + '</span>' +
-      '<a class="music-platform-link" href="https://music.163.com/#/playlist?id=' +
-      escapeHtml(id) + '" target="_blank" rel="noopener">在网易云打开 →</a>';
-    container.appendChild(titleEl);
-
-    var grid = document.createElement('div');
-    grid.className = 'music-song-grid';
-    grid.innerHTML = '<div class="music-loading">加载中...</div>';
-    container.appendChild(grid);
-
-    fetchPlaylist(server, type, id).then(function(songs) {
-      grid.innerHTML = '';
-      if (!songs || !Array.isArray(songs) || songs.length === 0) {
-        grid.innerHTML = '<div class="music-empty">该歌单暂无歌曲</div>';
-        return;
-      }
-      songs.forEach(function(song) {
-        grid.appendChild(createSongCard(song));
-      });
-    }).catch(function(err) {
-      console.error('歌单加载失败:', err);
-      grid.innerHTML = '<div class="music-error">加载失败，请刷新页面重试</div>';
-    });
-  }
-
-  function initMusicPage() {
-    var playlists = document.querySelectorAll('.music-playlist');
-    if (playlists.length === 0) return;
-    for (var i = 0; i < playlists.length; i++) {
-      initPlaylist(playlists[i]);
-    }
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initMusicPage);
-  } else {
-    initMusicPage();
-  }
-})();
-
-/* ============================================================
- *  11. Photos Page (source: photos page)
- * ============================================================ */
-(function() {
-  'use strict';
-
-  var lightbox = null;
 
   function createLightbox() {
     if (lightbox) return lightbox;
@@ -954,18 +806,224 @@ dark();
     return lightbox;
   }
 
-  function initPhotosPage() {
-    var wrapper = document.querySelector('.photos-page-container');
-    if (!wrapper) return;
+  var PAGE_SIZE = 20;
+  var PRELOAD_RANGE = 1;
 
+  function groupBySource(images) {
+    var map = {};
+    images.forEach(function(img) {
+      var key = img.source || '';
+      if (!map[key]) map[key] = { source: key, sourceName: img.sourceName || '', images: [] };
+      map[key].images.push(img);
+    });
+    return Object.keys(map).map(function(k) { return map[k]; });
+  }
+
+  function flattenImages(images) {
+    return images.slice();
+  }
+
+  function renderPage(galleryEl, images, page) {
+    var start = (page - 1) * PAGE_SIZE;
+    var end = Math.min(start + PAGE_SIZE, images.length);
+    var pageImages = images.slice(start, end);
+
+    galleryEl.innerHTML = '';
+
+    pageImages.forEach(function(img) {
+      var item = document.createElement('div');
+      item.className = 'photos-item';
+      item.innerHTML = '<img src="' + escapeHtml(img.url) + '" alt="' + escapeHtml(img.caption || '') + '" data-caption="' + escapeHtml(img.caption || '') + '" loading="lazy" decoding="async">';
+      galleryEl.appendChild(item);
+    });
+  }
+
+  function preloadImages(images) {
+    images.forEach(function(img) {
+      var pre = new Image();
+      pre.src = img.url;
+    });
+  }
+
+  function preloadAdjacentPages(allImages, currentPage, totalPages) {
+    for (var p = Math.max(1, currentPage - PRELOAD_RANGE); p <= Math.min(totalPages, currentPage + PRELOAD_RANGE); p++) {
+      if (p === currentPage) continue;
+      var start = (p - 1) * PAGE_SIZE;
+      var end = Math.min(start + PAGE_SIZE, allImages.length);
+      preloadImages(allImages.slice(start, end));
+    }
+  }
+
+  function createPagination(anchor, totalPages, currentPage, goFn) {
+    anchor.innerHTML = '';
+
+    if (totalPages <= 1) return;
+
+    var pag = document.createElement('div');
+    pag.className = 'photos-pagination';
+
+    function makeBtn(label, page, disabled) {
+      var btn = document.createElement('button');
+      btn.className = 'photos-page-btn';
+      btn.textContent = label;
+      btn.disabled = !!disabled;
+      if (!disabled) btn.addEventListener('click', function() { goFn(page); });
+      return btn;
+    }
+
+    pag.appendChild(makeBtn('上一页', currentPage - 1, currentPage <= 1));
+
+    var start = Math.max(1, currentPage - 2);
+    var end = Math.min(totalPages, currentPage + 2);
+    if (start > 1) { pag.appendChild(makeBtn('1', 1)); if (start > 2) { var dots = document.createElement('span'); dots.className = 'photos-page-dots'; dots.textContent = '...'; pag.appendChild(dots); } }
+    for (var p = start; p <= end; p++) {
+      var btn = makeBtn(String(p), p, p === currentPage);
+      if (p === currentPage) btn.classList.add('active');
+      pag.appendChild(btn);
+    }
+    if (end < totalPages) { if (end < totalPages - 1) { var dots2 = document.createElement('span'); dots2.className = 'photos-page-dots'; dots2.textContent = '...'; pag.appendChild(dots2); } pag.appendChild(makeBtn(String(totalPages), totalPages)); }
+
+    pag.appendChild(makeBtn('下一页', currentPage + 1, currentPage >= totalPages));
+
+    anchor.appendChild(pag);
+  }
+
+  function renderGallery(container, images) {
     var lb = createLightbox();
+    var allImages = flattenImages(images);
+    var totalPages = Math.ceil(allImages.length / PAGE_SIZE);
+    var currentPage = 1;
 
-    wrapper.addEventListener('click', function(e) {
+    var gallery = document.createElement('div');
+    gallery.className = 'photos-gallery';
+    container.appendChild(gallery);
+
+    var info = document.createElement('div');
+    info.className = 'photos-info-bar';
+    container.appendChild(info);
+
+    var pagAnchor = document.createElement('div');
+    container.appendChild(pagAnchor);
+
+    function goToPage(page) {
+      currentPage = page;
+      renderPage(gallery, allImages, page);
+      info.textContent = '共 ' + allImages.length + ' 张，第 ' + page + '/' + totalPages + ' 页';
+      createPagination(pagAnchor, totalPages, page, goToPage);
+      preloadAdjacentPages(allImages, page, totalPages);
+      window.scrollTo({ top: container.offsetTop - 80, behavior: 'smooth' });
+    }
+
+    container.addEventListener('click', function(e) {
       var item = e.target.closest('.photos-item');
       if (!item) return;
       var imgEl = item.querySelector('img');
       if (!imgEl) return;
       lb.show(imgEl.src, imgEl.dataset.caption || imgEl.alt || '');
+    });
+
+    goToPage(1);
+  }
+
+  function getCached() {
+    try {
+      var raw = localStorage.getItem(CACHE_KEY);
+      if (raw) {
+        var data = JSON.parse(raw);
+        if (data.timestamp && (Date.now() - data.timestamp < CACHE_TTL) && Array.isArray(data.images)) {
+          return data.images;
+        }
+      }
+    } catch(e) {}
+    return null;
+  }
+
+  function setCache(images) {
+    try {
+      localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), images: images }));
+    } catch(e) {}
+  }
+
+  function fetchGitHubScan(repoPath, cdnBase) {
+    var apiBase = 'https://api.github.com/repos/' + repoPath + '/contents';
+
+    return fetch(apiBase).then(function(r) { return r.json(); }).then(function(items) {
+      if (!Array.isArray(items)) throw new Error('GitHub API error');
+
+      var dirs = items.filter(function(f) { return f.type === 'dir'; });
+      var fetchPromises = dirs.map(function(dir) {
+        return fetch(dir.url).then(function(r) { return r.json(); }).then(function(files) {
+          if (!Array.isArray(files)) return [];
+          return files.filter(function(f) { return f.type === 'file'; }).map(function(f) {
+            var ext = (f.name || '').split('.').pop().toLowerCase();
+            var isImg = ['jpg','jpeg','png','gif','webp','svg','bmp'].indexOf(ext) !== -1;
+            if (!isImg) return null;
+            return {
+              url: cdnBase.replace(/\/+$/, '') + '/' + dir.name + '/' + f.name,
+              caption: (f.name || '').replace(/\.[^.]+$/, ''),
+              source: '',
+              sourceName: dir.name
+            };
+          }).filter(Boolean);
+        }).catch(function() { return []; });
+      });
+
+      return Promise.all(fetchPromises).then(function(results) {
+        var allImages = [];
+        results.forEach(function(arr) { allImages = allImages.concat(arr); });
+        return allImages;
+      });
+    });
+  }
+
+  function parseCdnUrl(cdnBase) {
+    var m = cdnBase.match(/github\.com\/([^/]+\/[^/]+)/);
+    if (m) return { type: 'github', repo: m[1] };
+    m = cdnBase.match(/jsdelivr\.net\/gh\/([^@]+)/);
+    if (m) return { type: 'jsdelivr', repo: m[1] };
+    m = cdnBase.match(/gh\/([^/]+\/[^@]+)/);
+    if (m) return { type: 'jsdelivr', repo: m[1] };
+    return null;
+  }
+
+  function initPhotosPage() {
+    var wrapper = document.querySelector('.photos-page-container');
+    if (!wrapper) return;
+
+    var loading = wrapper.querySelector('.photos-loading');
+    var cdnBase = wrapper.dataset.cdnBase || '';
+
+    if (!cdnBase) {
+      if (loading) loading.textContent = '请先配置图床链接（data-cdn-base）';
+      return;
+    }
+
+    var cached = getCached();
+    if (cached) {
+      if (loading) loading.remove();
+      renderGallery(wrapper, cached);
+      return;
+    }
+
+    var parsed = parseCdnUrl(cdnBase);
+    if (!parsed) {
+      if (loading) loading.textContent = '无法解析图床链接';
+      return;
+    }
+
+    if (loading) loading.textContent = '正在获取图片列表...';
+
+    fetchGitHubScan(parsed.repo, cdnBase).then(function(images) {
+      if (loading) loading.remove();
+      if (images.length === 0) {
+        wrapper.appendChild(document.createTextNode('暂无图片，请在仓库中添加图片后刷新'));
+        return;
+      }
+      setCache(images);
+      renderGallery(wrapper, images);
+    }).catch(function(err) {
+      console.error('图片加载失败:', err);
+      if (loading) loading.textContent = '加载失败，请刷新页面重试';
     });
   }
 

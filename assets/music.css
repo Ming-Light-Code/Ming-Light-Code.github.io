@@ -1,0 +1,249 @@
+/* Music Page Styles */
+/* ============================================================
+ *  7. Music Page (source: music page)
+ * ============================================================ */
+.type-music .music-page-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.type-music .music-intro {
+  margin-bottom: 30px;
+  padding: 16px 20px;
+  border-radius: 8px;
+  background: var(--card-bg-color, #fff);
+  border-left: 4px solid #40e0d0;
+  color: var(--font-color, #333);
+  font-size: 15px;
+}
+
+.type-music .music-playlist {
+  margin-bottom: 44px;
+}
+
+.type-music .music-playlist-title {
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #40e0d0;
+  color: var(--font-color);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.type-music .music-song-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 10px;
+}
+
+.type-music .music-song-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--card-bg-color, #fff);
+  border: 1px solid var(--border-color, #e5e7eb);
+  transition: all 0.25s ease;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.type-music .music-song-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(64, 224, 208, 0.25);
+  border-color: #40e0d0;
+}
+
+.type-music .music-song-cover {
+  width: 56px;
+  height: 56px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #f0f0f0;
+}
+
+.type-music .music-song-info {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.type-music .music-song-name {
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+
+.type-music .music-song-artist {
+  font-size: 12px;
+  color: var(--meta-color, #888);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.type-music .music-song-album {
+  font-size: 11px;
+  color: var(--meta-color, #999);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+
+.type-music .music-loading,
+.type-music .music-error,
+.type-music .music-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--meta-color, #888);
+  grid-column: 1 / -1;
+}
+
+.type-music .music-error {
+  color: #e74c3c;
+}
+
+.type-music .music-platform-link {
+  font-size: 13px;
+  font-weight: normal;
+  color: #40e0d0;
+  margin-left: auto;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.type-music .music-platform-link:hover {
+  text-decoration: underline;
+}
+
+/* filter bar */
+.type-music .music-filter-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.type-music .music-filter-select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color, #e5e7eb);
+  background: var(--card-bg-color, #fff);
+  color: var(--font-color, #333);
+  font-size: 13px;
+  min-width: 160px;
+  cursor: pointer;
+  outline: none;
+}
+
+.type-music .music-filter-select:focus {
+  border-color: #40e0d0;
+}
+
+.type-music .music-search-input {
+  flex: 1;
+  min-width: 180px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color, #e5e7eb);
+  background: var(--card-bg-color, #fff);
+  color: var(--font-color, #333);
+  font-size: 13px;
+  outline: none;
+}
+
+.type-music .music-search-input:focus {
+  border-color: #40e0d0;
+}
+
+.type-music .music-search-input::placeholder {
+  color: #999;
+}
+
+/* info bar */
+.type-music .music-info-bar {
+  text-align: center;
+  font-size: 13px;
+  color: var(--meta-color, #888);
+  margin: 16px 0 8px;
+}
+
+/* pagination */
+.type-music .music-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 24px;
+  padding-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.type-music .music-page-btn {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color, #e5e7eb);
+  background: var(--card-bg-color, #fff);
+  color: var(--font-color, #333);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.type-music .music-page-btn:hover:not(:disabled) {
+  border-color: #40e0d0;
+  color: #40e0d0;
+}
+
+.type-music .music-page-btn.active {
+  background: #40e0d0;
+  border-color: #40e0d0;
+  color: #fff;
+}
+
+.type-music .music-page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.type-music .music-page-dots {
+  padding: 0 4px;
+  color: var(--meta-color, #888);
+}
+
+[data-theme="dark"] .type-music .music-filter-select,
+[data-theme="dark"] .type-music .music-search-input,
+[data-theme="dark"] .type-music .music-page-btn {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+[data-theme="dark"] .type-music .music-page-btn.active {
+  background: #40e0d0;
+  border-color: #40e0d0;
+}
+
+[data-theme="dark"] .type-music .music-song-card {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+[data-theme="dark"] .type-music .music-song-card:hover {
+  border-color: #40e0d0;
+}
+
+[data-theme="dark"] .type-music .music-intro {
+  background: #1f2937;
+}
+
