@@ -119,13 +119,13 @@ if (m == 12 && dd == 25) {
 }
 
 // 传统节日部分
-if ((y == 2023 && m == 4 && dd == 5) || (y == 2024 && m == 4 && dd == 4) || (y == 2025 && m == 4 && dd == 4)) {
+if ((y == 2023 && m == 4 && dd == 5) || (y == 2024 && m == 4 && dd == 4) || (y == 2025 && m == 4 && dd == 4) || (y == 2026 && m == 4 && dd == 5)) {
     if (sessionStorage.getItem("isPopupWindow") != "1") {
         Swal.fire("清明时节雨纷纷,一束鲜花祭故人💐");
         sessionStorage.setItem("isPopupWindow", "1");
     }
 }
-if ((y == 2023 && m == 12 && dd == 22) || (y == 2024 && m == 12 && dd == 21) || (y == 2025 && m == 12 && dd == 21)) {
+if ((y == 2023 && m == 12 && dd == 22) || (y == 2024 && m == 12 && dd == 21) || (y == 2025 && m == 12 && dd == 21) || (y == 2026 && m == 12 && dd == 22)) {
     if (sessionStorage.getItem("isPopupWindow") != "1") {
         Swal.fire("冬至快乐\n快吃上一碗热热的汤圆和饺子吧🧆");
         sessionStorage.setItem("isPopupWindow", "1");
@@ -681,7 +681,7 @@ window.addEventListener('resize', debounce(initTagCloud, 250));
  * ============================================================ */
 function newYear() {
   if (!document.querySelector('#newYear')) return;
-  var SpringFestival = new Date('2026-02-17 00:00:00');
+  var SpringFestival = new Date('2027-02-06 00:00:00');
   var newYear = SpringFestival.getTime() / 1000;
   var week = { 0: '周日', 1: '周一', 2: '周二', 3: '周三', 4: '周四', 5: '周五', 6: '周六' };
   function nol(h) { h = Number(h); return h > 9 ? h : '0' + h; }
@@ -751,7 +751,8 @@ document.addEventListener("pjax:complete", whenDOMReady);
       if (window.oml2d && window.oml2d.stage && window.oml2d.stage.canvas) {
         return window.oml2d.stage.canvas.parentElement.parentElement;
       }
-      return document.querySelector('.live2d-stage, [class*="live2d"] canvas') && document.querySelector('.live2d-stage, [class*="live2d"] canvas").parentElement && document.querySelector('.live2d-stage, [class*="live2d"] canvas').parentElement.parentElement;
+      var _el = document.querySelector('.live2d-stage, [class*="live2d"] canvas');
+      return _el && _el.parentElement && _el.parentElement.parentElement;
     }
 
     function toggleLive2d() {
@@ -789,3 +790,188 @@ document.addEventListener("pjax:complete", whenDOMReady);
  * ============================================================ */
 function dark() {window.requestAnimationFrame=window.requestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||window.msRequestAnimationFrame;var n,e,i,h,t=.05,s=document.getElementById("universe"),o=!0,a="180,184,240",r="226,225,142",d="226,225,224",c=[];function f(){n=window.innerWidth,e=window.innerHeight,i=.216*n,s.setAttribute("width",n),s.setAttribute("height",e)}function u(){h.clearRect(0,0,n,e);for(var t=c.length,i=0;i<t;i++){var s=c[i];s.move(),s.fadeIn(),s.fadeOut(),s.draw()}}function y(){this.reset=function(){this.giant=m(3),this.comet=!this.giant&&!o&&m(10),this.x=l(0,n-10),this.y=l(0,e),this.r=l(1.1,2.6),this.dx=l(t,6*t)+(this.comet+1-1)*t*l(50,120)+2*t,this.dy=-l(t,6*t)-(this.comet+1-1)*t*l(50,120),this.fadingOut=null,this.fadingIn=!0,this.opacity=0,this.opacityTresh=l(.2,1-.4*(this.comet+1-1)),this.do=l(5e-4,.002)+.001*(this.comet+1-1)},this.fadeIn=function(){this.fadingIn&&(this.fadingIn=!(this.opacity>this.opacityTresh),this.opacity+=this.do)},this.fadeOut=function(){this.fadingOut&&(this.fadingOut=!(this.opacity<0),this.opacity-=this.do/2,(this.x>n||this.y<0)&&(this.fadingOut=!1,this.reset()))},this.draw=function(){if(h.beginPath(),this.giant)h.fillStyle="rgba("+a+","+this.opacity+")",h.arc(this.x,this.y,2,0,2*Math.PI,!1);else if(this.comet){h.fillStyle="rgba("+d+","+this.opacity+")",h.arc(this.x,this.y,1.5,0,2*Math.PI,!1);for(var t=0;t<30;t++)h.fillStyle="rgba("+d+","+(this.opacity-this.opacity/20*t)+")",h.rect(this.x-this.dx/4*t,this.y-this.dy/4*t-2,2,2),h.fill()}else h.fillStyle="rgba("+r+","+this.opacity+")",h.rect(this.x,this.y,this.r,this.r);h.closePath(),h.fill()},this.move=function(){this.x+=this.dx,this.y+=this.dy,!1===this.fadingOut&&this.reset(),(this.x>n-n/4||this.y<0)&&(this.fadingOut=!0)},setTimeout(function(){o=!1},50)}function m(t){return Math.floor(1e3*Math.random())+1<10*t}function l(t,i){return Math.random()*(i-t)+t}f(),window.addEventListener("resize",f,!1),function(){h=s.getContext("2d");for(var t=0;t<i;t++)c[t]=new y,c[t].reset();u()}(),function t(){document.getElementsByTagName('html')[0].getAttribute('data-theme')=='dark'&&u(),window.requestAnimationFrame(t)}()};
 dark();
+
+/* ============================================================
+ *  10. Music Page (source: music page)
+ * ============================================================ */
+(function() {
+  'use strict';
+
+  var METING_API_MIRRORS = [
+    'https://api.i-meto.com/meting/api',
+    'https://api.injahow.cn/meting/api'
+  ];
+
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+  }
+
+  function getSongLink(song) {
+    if (song.url_id) return 'https://music.163.com/#/song?id=' + song.url_id;
+    if (song.url) {
+      var m = song.url.match(/[?&]id=(\d+)/);
+      if (m) return 'https://music.163.com/#/song?id=' + m[1];
+    }
+    return null;
+  }
+
+  function createSongCard(song) {
+    var link = getSongLink(song);
+    var el = document.createElement(link ? 'a' : 'div');
+    el.className = 'music-song-card';
+    if (link) { el.href = link; el.target = '_blank'; el.rel = 'noopener'; }
+    el.title = (song.name || '') + ' - ' + (song.artist || '');
+
+    var cover = song.pic || song.cover || '';
+    var name = escapeHtml(song.name || '未知歌曲');
+    var artist = escapeHtml(song.artist || '未知艺术家');
+    var album = escapeHtml(song.album || '');
+
+    el.innerHTML =
+      '<img class="music-song-cover" src="' + cover + '" alt="" loading="lazy" ' +
+      'onerror="this.style.display=\'none\'">' +
+      '<div class="music-song-info">' +
+        '<div class="music-song-name">' + name + '</div>' +
+        '<div class="music-song-artist">' + artist + '</div>' +
+        (album ? '<div class="music-song-album">' + album + '</div>' : '') +
+      '</div>';
+    return el;
+  }
+
+  function fetchPlaylist(server, type, id, mirrorIndex) {
+    mirrorIndex = mirrorIndex || 0;
+    if (mirrorIndex >= METING_API_MIRRORS.length) {
+      return Promise.reject(new Error('所有 API 镜像不可用'));
+    }
+    var url = METING_API_MIRRORS[mirrorIndex] +
+      '?server=' + encodeURIComponent(server) +
+      '&type=' + encodeURIComponent(type) +
+      '&id=' + encodeURIComponent(id);
+    return fetch(url).then(function(resp) {
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      return resp.json();
+    }).catch(function() {
+      return fetchPlaylist(server, type, id, mirrorIndex + 1);
+    });
+  }
+
+  function initPlaylist(container) {
+    var id = container.dataset.id;
+    var server = container.dataset.server || 'netease';
+    var type = container.dataset.type || 'playlist';
+    var title = container.dataset.title || '歌单 ' + id;
+
+    var titleEl = document.createElement('h2');
+    titleEl.className = 'music-playlist-title';
+    titleEl.innerHTML =
+      '<span>' + escapeHtml(title) + '</span>' +
+      '<a class="music-platform-link" href="https://music.163.com/#/playlist?id=' +
+      escapeHtml(id) + '" target="_blank" rel="noopener">在网易云打开 →</a>';
+    container.appendChild(titleEl);
+
+    var grid = document.createElement('div');
+    grid.className = 'music-song-grid';
+    grid.innerHTML = '<div class="music-loading">加载中...</div>';
+    container.appendChild(grid);
+
+    fetchPlaylist(server, type, id).then(function(songs) {
+      grid.innerHTML = '';
+      if (!songs || !Array.isArray(songs) || songs.length === 0) {
+        grid.innerHTML = '<div class="music-empty">该歌单暂无歌曲</div>';
+        return;
+      }
+      songs.forEach(function(song) {
+        grid.appendChild(createSongCard(song));
+      });
+    }).catch(function(err) {
+      console.error('歌单加载失败:', err);
+      grid.innerHTML = '<div class="music-error">加载失败，请刷新页面重试</div>';
+    });
+  }
+
+  function initMusicPage() {
+    var playlists = document.querySelectorAll('.music-playlist');
+    if (playlists.length === 0) return;
+    for (var i = 0; i < playlists.length; i++) {
+      initPlaylist(playlists[i]);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMusicPage);
+  } else {
+    initMusicPage();
+  }
+})();
+
+/* ============================================================
+ *  11. Photos Page (source: photos page)
+ * ============================================================ */
+(function() {
+  'use strict';
+
+  var lightbox = null;
+
+  function createLightbox() {
+    if (lightbox) return lightbox;
+
+    var lb = document.createElement('div');
+    lb.id = 'photos-lightbox';
+    lb.innerHTML =
+      '<span class="photos-lightbox-close">&times;</span>' +
+      '<img src="" alt="">' +
+      '<div class="photos-lightbox-caption"></div>';
+    document.body.appendChild(lb);
+
+    var img = lb.querySelector('img');
+    var caption = lb.querySelector('.photos-lightbox-caption');
+
+    function close() {
+      lb.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    lb.addEventListener('click', function(e) {
+      if (e.target === lb || e.target.classList.contains('photos-lightbox-close')) {
+        close();
+      }
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && lb.classList.contains('active')) close();
+    });
+
+    lightbox = {
+      show: function(src, cap) {
+        img.src = src;
+        caption.textContent = cap || '';
+        lb.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    };
+    return lightbox;
+  }
+
+  function initPhotosPage() {
+    var wrapper = document.querySelector('.photos-page-container');
+    if (!wrapper) return;
+
+    var lb = createLightbox();
+
+    wrapper.addEventListener('click', function(e) {
+      var item = e.target.closest('.photos-item');
+      if (!item) return;
+      var imgEl = item.querySelector('img');
+      if (!imgEl) return;
+      lb.show(imgEl.src, imgEl.dataset.caption || imgEl.alt || '');
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPhotosPage);
+  } else {
+    initPhotosPage();
+  }
+})();
