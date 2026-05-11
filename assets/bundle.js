@@ -174,7 +174,9 @@ if ((lunar["IMonthCn"] == "九月" && lunar["IDayCn"] == "初九")) {
 
 /* ============================================================
  *  3. Music Player (source: assets/inject/musicplayer_bottle.js)
+ *  [播放器功能已取消]
  * ============================================================ */
+/*
 (function() {
 'use strict';
 
@@ -290,6 +292,7 @@ if (document.readyState === 'loading') {
     loadLibraries();
 }
 })();
+*/
 
 /* ============================================================
  *  4. Typewriter Effect (source: assets/inject/typer_bottle.js)

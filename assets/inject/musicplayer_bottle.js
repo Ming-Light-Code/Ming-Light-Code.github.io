@@ -1,4 +1,7 @@
+// ============================================================
+// 播放器功能已取消
 // 修复 meting-js 自定义元素注册
+/*
 (function() {
 'use strict';
 
@@ -16,9 +19,9 @@ function loadLibraries() {
         check: () => typeof MetingJSElement !== 'undefined'
     }
     ];
-    
+
     let loadedCount = 0;
-    
+
     libraries.forEach(lib => {
     if (lib.check()) {
         loadedCount++;
@@ -40,7 +43,7 @@ function loadLibraries() {
         document.head.appendChild(script);
     }
     });
-    
+
     // 如果都已经加载，直接初始化
     if (loadedCount === libraries.length) {
     setTimeout(initPlayer, 100);
@@ -50,11 +53,11 @@ function loadLibraries() {
 // 初始化播放器
 function initPlayer() {
     console.log('开始初始化音乐播放器...');
-    
+
     // 检查自定义元素是否已注册
     if (!window.customElements.get('meting-js')) {
     console.error('meting-js 自定义元素未注册！');
-    
+
     // 尝试手动注册
     if (typeof MetingJSElement !== 'undefined') {
         try {
@@ -65,7 +68,7 @@ function initPlayer() {
         }
     }
     }
-    
+
     // 创建播放器容器
     if (!document.getElementById('music-player-container')) {
     const container = document.createElement('div');
@@ -83,7 +86,7 @@ function initPlayer() {
         transition: all 0.3s ease;
     `;
     document.body.appendChild(container);
-    
+
     // 创建 meting-js 元素
     const metingElement = document.createElement('meting-js');
     metingElement.id = 'music-player';
@@ -101,14 +104,14 @@ function initPlayer() {
     metingElement.setAttribute('mutex', 'true');
     metingElement.setAttribute('list-folded', 'true');
     metingElement.setAttribute('list-max-height', '300px');
-    
+
     container.appendChild(metingElement);
     console.log('音乐播放器已创建');
-    
+
     // 添加展开/收起功能
     container.addEventListener('click', function(e) {
         if (e.target.closest('.aplayer-miniswitcher')) return;
-        
+
         const player = container.querySelector('.aplayer');
         if (player) {
         if (player.classList.contains('aplayer-mini')) {
@@ -134,3 +137,4 @@ if (document.readyState === 'loading') {
     loadLibraries();
 }
 })();
+*/

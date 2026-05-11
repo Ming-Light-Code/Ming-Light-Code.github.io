@@ -5,7 +5,9 @@
 
 /* ============================================================
  *  1. Music Player (source: assets/inject/musicplayer_head.css)
+ *  [播放器功能已取消]
  * ============================================================ */
+/*
 .aplayer {
   z-index: 99999 !important;
   position: fixed !important;
@@ -51,6 +53,7 @@
   align-items: center;
   justify-content: center;
 }
+*/
 
 /* ============================================================
  *  2. Typewriter Effect (source: assets/inject/typer_head.css)

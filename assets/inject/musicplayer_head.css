@@ -1,4 +1,7 @@
-    /* 音乐播放器修复样式 */
+    /* ============================================================
+     * 播放器功能已取消
+     * ============================================================ */
+    /*
     .aplayer {
     z-index: 99999 !important;
     position: fixed !important;
@@ -20,14 +23,12 @@
     max-height: 300px !important;
     }
 
-    /* 确保播放器可见 */
     #aplayer-global {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
     }
 
-    /* 添加音乐播放器开关按钮 */
     .music-toggle-btn {
     position: fixed;
     bottom: 20px;
@@ -46,3 +47,4 @@
     align-items: center;
     justify-content: center;
     }
+    */
