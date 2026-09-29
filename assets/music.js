@@ -33,13 +33,34 @@
     el.className = 'music-song-card';
     if (link) { el.href = link; el.target = '_blank'; el.rel = 'noopener'; }
 
-    el.innerHTML =
-      '<img class="music-song-cover" src="' + cover + '" alt="" loading="lazy" ' +
-      'onerror="this.style.display=\'none\'">' +
-      '<div class="music-song-info">' +
-        '<div class="music-song-name">' + escapeHtml(songName) + '</div>' +
-        '<div class="music-song-artist">' + escapeHtml(songArtist) + '</div>' +
-      '</div>';
+    if (cover) {
+      try {
+        var coverUrl = new URL(cover, window.location.href);
+        if (coverUrl.protocol === 'https:' || coverUrl.origin === window.location.origin) {
+          var image = document.createElement('img');
+          image.className = 'music-song-cover';
+          image.src = coverUrl.href;
+          image.alt = '';
+          image.loading = 'lazy';
+          image.addEventListener('error', function() { image.style.display = 'none'; });
+          el.appendChild(image);
+        }
+      } catch (e) {
+        // Ignore malformed cover URLs from the playlist service.
+      }
+    }
+
+    var info = document.createElement('div');
+    info.className = 'music-song-info';
+    var name = document.createElement('div');
+    name.className = 'music-song-name';
+    name.textContent = songName;
+    var artist = document.createElement('div');
+    artist.className = 'music-song-artist';
+    artist.textContent = songArtist;
+    info.appendChild(name);
+    info.appendChild(artist);
+    el.appendChild(info);
     return el;
   }
 
