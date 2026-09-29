@@ -9,12 +9,6 @@
   var CACHE_PREFIX = 'music_pl_';
   var CACHE_TTL = 3600000;
 
-  function escapeHtml(str) {
-    var div = document.createElement('div');
-    div.textContent = str || '';
-    return div.innerHTML;
-  }
-
   function getSongLink(song) {
     if (song.url) {
       var m = song.url.match(/[?&]id=(\d+)/);
@@ -107,20 +101,28 @@
     bar.className = 'music-filter-bar';
 
     // artist dropdown
-    var selectHtml = '<select class="music-filter-select"><option value="">全部艺术家</option>';
+    var select = document.createElement('select');
+    select.className = 'music-filter-select';
+    var allArtists = document.createElement('option');
+    allArtists.value = '';
+    allArtists.textContent = '全部艺术家';
+    select.appendChild(allArtists);
     artists.forEach(function(a) {
-      selectHtml += '<option value="' + escapeHtml(a) + '">' + escapeHtml(a) + '</option>';
+      var option = document.createElement('option');
+      option.value = a;
+      option.textContent = a;
+      select.appendChild(option);
     });
-    selectHtml += '</select>';
 
     // search input
-    var searchHtml = '<input class="music-search-input" type="text" placeholder="搜索歌曲或艺术家...">';
+    var search = document.createElement('input');
+    search.className = 'music-search-input';
+    search.type = 'text';
+    search.placeholder = '搜索歌曲或艺术家...';
 
-    bar.innerHTML = selectHtml + searchHtml;
+    bar.appendChild(select);
+    bar.appendChild(search);
     container.appendChild(bar);
-
-    var select = bar.querySelector('.music-filter-select');
-    var search = bar.querySelector('.music-search-input');
 
     function doFilter() {
       var artistFilter = select.value;
@@ -191,10 +193,16 @@
     // title bar
     var titleEl = document.createElement('h2');
     titleEl.className = 'music-playlist-title';
-    titleEl.innerHTML =
-      '<span>' + escapeHtml(title) + '</span>' +
-      '<a class="music-platform-link" href="https://music.163.com/#/playlist?id=' +
-      escapeHtml(id) + '" target="_blank" rel="noopener">在网易云打开 →</a>';
+    var titleText = document.createElement('span');
+    titleText.textContent = title;
+    var platformLink = document.createElement('a');
+    platformLink.className = 'music-platform-link';
+    platformLink.href = 'https://music.163.com/#/playlist?id=' + encodeURIComponent(id);
+    platformLink.target = '_blank';
+    platformLink.rel = 'noopener';
+    platformLink.textContent = '在网易云打开 →';
+    titleEl.appendChild(titleText);
+    titleEl.appendChild(platformLink);
     container.appendChild(titleEl);
 
     // loading

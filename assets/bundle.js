@@ -763,12 +763,6 @@ dark();
   var CACHE_KEY = 'photos_v5';
   var CACHE_TTL = 3600000;
 
-  function escapeHtml(str) {
-    var div = document.createElement('div');
-    div.textContent = str || '';
-    return div.innerHTML;
-  }
-
   function createLightbox() {
     if (lightbox) return lightbox;
 
@@ -836,7 +830,13 @@ dark();
     pageImages.forEach(function(img) {
       var item = document.createElement('div');
       item.className = 'photos-item';
-      item.innerHTML = '<img src="' + escapeHtml(img.url) + '" alt="' + escapeHtml(img.caption || '') + '" data-caption="' + escapeHtml(img.caption || '') + '" loading="lazy" decoding="async">';
+      var image = document.createElement('img');
+      image.src = img.url;
+      image.alt = img.caption || '';
+      image.dataset.caption = img.caption || '';
+      image.loading = 'lazy';
+      image.decoding = 'async';
+      item.appendChild(image);
       galleryEl.appendChild(item);
     });
   }
@@ -962,7 +962,7 @@ dark();
             var isImg = ['jpg','jpeg','png','gif','webp','svg','bmp'].indexOf(ext) !== -1;
             if (!isImg) return null;
             return {
-              url: cdnBase.replace(/\/+$/, '') + '/' + dir.name + '/' + f.name,
+              url: cdnBase.replace(/\/+$/, '') + '/' + encodeURIComponent(dir.name) + '/' + encodeURIComponent(f.name),
               caption: (f.name || '').replace(/\.[^.]+$/, ''),
               source: '',
               sourceName: dir.name

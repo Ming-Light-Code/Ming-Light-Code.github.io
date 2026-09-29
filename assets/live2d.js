@@ -17,7 +17,9 @@
       scale: 0.12,
       stageStyle: {
         width: 260,
-        height: 300
+        height: 300,
+        // Reserve the right edge for the site's floating action buttons.
+        right: '100px'
       }
     }]
   });
